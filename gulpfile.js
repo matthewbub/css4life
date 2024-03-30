@@ -38,20 +38,19 @@ function watch() {
 }
 
 function lint() {
-	const rules = {
+	const stylelintRules = {
 		"color-no-invalid-hex": 2,
 	}
 
-	const stylelintConfig = stylelint({ rules })
+	const stylelintConfig = stylelint({ rules: stylelintRules })
+
+	const postcssOptions = [
+		stylelintConfig,
+		reporter({ clearMessages: true })
+	]
+
 	return gulp.src('src/*.css')
-		.pipe(
-			postcss([
-				stylelintConfig,
-				reporter({
-					clearMessages: true
-				})
-			])
-		)
+		.pipe(postcss(postcssOptions))
 }
 
 const build = gulp.series(styles, minify);
