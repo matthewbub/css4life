@@ -1,0 +1,17 @@
+{
+  "name": "custom-postcss-processer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "gulp styles"
+  },
+  "author": "Matthew Bub<hey@matthewbub.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "cssnano": "^6.1.2",
+    "gulp": "^5.0.0",
+    "gulp-postcss": "^10.0.0",
+    "postcss": "^8.4.38"
+  }
+}
