@@ -3,33 +3,35 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnanoPlugin = require('cssnano');
 const rename = require('gulp-rename');
+const sourcemaps = require('gulp-sourcemaps');
 
-// Define the 'styles' task
 function styles() {
 	return gulp.src('src/*.css')
+		.pipe(sourcemaps.init())
 		.pipe(postcss([
 			autoprefixer
 		]))
+		.pipe(sourcemaps.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
-// Define the 'minify' task with 'styles' as a dependency
 function minify() {
-	return gulp.src('dist/*.css') // Changed from 'dist/example.css' to 'dist/*.css' to generalize the task
+	return gulp.src('dist/*.css')
+		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(postcss([
 			cssnanoPlugin
 		]))
 		.pipe(rename({
 			suffix: '.min'
 		}))
+		.pipe(sourcemaps.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
-// Use 'gulp.series' for running tasks in order. If you need to run tasks in parallel, use 'gulp.parallel'
 const build = gulp.series(styles, minify);
 
-// Expose the tasks to Gulp
 gulp.task('styles', styles);
+
 gulp.task('minify', minify);
 gulp.task('default', build);
 
