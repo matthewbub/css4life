@@ -4,6 +4,8 @@ const autoprefixer = require('autoprefixer');
 const cssnanoPlugin = require('cssnano');
 const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
+const stylelint = require('stylelint');
+const reporter = require('postcss-reporter');
 
 function styles() {
 	return gulp.src('src/*.css')
@@ -35,9 +37,27 @@ function watch() {
 	});
 }
 
+function lint() {
+	const rules = {
+		"color-no-invalid-hex": 2,
+	}
+
+	const stylelintConfig = stylelint({ rules })
+	return gulp.src('src/*.css')
+		.pipe(
+			postcss([
+				stylelintConfig,
+				reporter({
+					clearMessages: true
+				})
+			])
+		)
+}
+
 const build = gulp.series(styles, minify);
 
 gulp.task('styles', styles);
 gulp.task('minify', minify);
 gulp.task('default', build);
+gulp.task('lint', lint);
 gulp.task('watch', watch);
