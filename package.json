@@ -6,7 +6,8 @@
     "clean": "rimraf dist",
     "build": "npm run clean && gulp default",
     "build:styles": "gulp styles",
-    "build:minify": "gulp minify"
+    "build:minify": "gulp minify",
+    "watch": "gulp watch"
   },
   "author": "Matthew Bub<hey@matthewbub.com>",
   "license": "MIT",

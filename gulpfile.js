@@ -28,10 +28,16 @@ function minify() {
 		.pipe(gulp.dest('dist'));
 }
 
+function watch() {
+	const watcher = gulp.watch('src/*.css', build)
+	watcher.on('change', function(fileName) {
+		console.log('Rebuildig ' + fileName)
+	});
+}
+
 const build = gulp.series(styles, minify);
 
 gulp.task('styles', styles);
-
 gulp.task('minify', minify);
 gulp.task('default', build);
-
+gulp.task('watch', watch);
