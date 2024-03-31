@@ -15,6 +15,7 @@ const reporterPlugin = require('postcss-reporter');
 const cssVariablesPlugin = require('postcss-css-variables');
 const cssMixinsPlugin = require('postcss-mixins');
 const calcPlugin = require('postcss-calc');
+const nestingPlugin = require('postcss-nesting');
 
 function buildStyles() {
 	// convert CSS variables to static values for older browsers
@@ -31,6 +32,7 @@ function buildStyles() {
 	});
 	const cssMixinsConfig = cssMixinsPlugin({});
 	const calcConfig = calcPlugin({/* handle pixel fall back for rem values */ });
+	const nestingConfig = nestingPlugin({});
 
 	return gulp.src('src/*.css')
 		.pipe(sourcemapsPlugin.init())
@@ -38,21 +40,27 @@ function buildStyles() {
 			autoprefixerPlugin,
 			cssVariablesConfig,
 			cssMixinsConfig,
-			calcConfig
+			calcConfig,
+			nestingConfig
 		]))
 		.pipe(sourcemapsPlugin.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
-function minify() {
+/**
+ * @name minifyCSS - npm run minify
+ * 
+ * @readme
+ * Minifies CSS files and generates source maps.
+ * 
+ * This function takes CSS files from the 'dist' directory, minifies them,
+ * generates source maps for debugging, and saves the output back to the 'dist' directory.
+ */
+function minifyCSS() {
 	return gulp.src('dist/*.css')
 		.pipe(sourcemapsPlugin.init({ loadMaps: true }))
-		.pipe(postcssPlugin([
-			cssnanoPlugin
-		]))
-		.pipe(renamePlugin({
-			suffix: '.min'
-		}))
+		.pipe(postcssPlugin([ cssnanoPlugin ]))
+		.pipe(renamePlugin({ suffix: '.min' }))
 		.pipe(sourcemapsPlugin.write('/maps'))
 		.pipe(gulp.dest('dist'));
 }
@@ -60,11 +68,11 @@ function minify() {
 function watch() {
 	const watcher = gulp.watch('src/*.css', build)
 	watcher.on('change', function(fileName) {
-		console.log('Rebuildig ' + fileName)
+		console.log('Rebuilding ' + fileName)
 	});
 }
 
-function lint() {
+function lintDevCode() {
 	const stylelintRules = {
 		"color-no-invalid-hex": 2,
 	}
@@ -77,10 +85,10 @@ function lint() {
 	]
 
 	return gulp.src('src/*.css')
-		.pipe(postcss(postcssOptions))
+		.pipe(postcssPlugin(postcssOptions))
 }
 
-/** @deprecated */
+/** @deprecated I'm not supporting this, but it should work out of the box */
 function buildSass() {
 	const sassConfig = sassPlugin({
 		outputStyle: 'compressed'
@@ -91,11 +99,20 @@ function buildSass() {
 		.pipe(gulp.dest('src/'))
 }
 
-const build = gulp.series(/*buildSass,*/ buildStyles, minify /*...*/);
+/**
+ * @name build - npm run build
+ * @readme a series of tasks to build the CSS files 
+ * 
+ * if you don't like or want a particular task, you can remove it from the series
+ * 
+ * @note if you want to use scss files, you can use the `buildSass` task at your own risk
+ * it would need to be treated as a preprocess step before the `buildStyles` task
+ */
+const build = gulp.series(/*buildSass,*/ buildStyles, lintDevCode, minifyCSS /*...*/);
 
-//gulp.task('build-sass', buildSass);
+gulp.task('build-sass', buildSass);
 gulp.task('build-styles', buildStyles);
-gulp.task('minify', minify);
+gulp.task('minify', minifyCSS);
 gulp.task('default', build);
-gulp.task('lint', lint);
+gulp.task('lint-dev', lintDevCode);
 gulp.task('watch', watch);

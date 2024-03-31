@@ -1,0 +1,13 @@
+# Prettier seems to respect gitignore, which conflicts with my not wanting to commit the `dist` folder. 
+# There's probably a way to fix this, but im not too worried about it right now.
+
+# leave commented out because this is the directory I want to format.
+# dist
+
+# don't format minfied code lol
+*.min.css
+
+# below this line matches `.gitignore`
+node_modules
+.vscode
+.idea

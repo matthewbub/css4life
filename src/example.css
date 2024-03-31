@@ -1,12 +1,17 @@
 :root {
-	--black: #000;
+  --black: #000;
+  --blue: #007bff;
 }
 
 @define-mixin fontstyle {
-	color: var(--black);
+  color: var(--black);
 }
 
 body {
-	background: var(--primary-color);	
-	@mixin fontstyle;
+  background: var(--primary-color);
+  @mixin fontstyle;
+
+  &.dark {
+    background: var(--blue);
+  }
 }
