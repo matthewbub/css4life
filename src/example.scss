@@ -1,0 +1,15 @@
+$black: #000;
+
+@mixin FullHeight {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	background: green;
+	width: fit-content;
+	height: 300px;
+	color: $black;
+
+	@include FullHeight;
+}

@@ -6,17 +6,20 @@ const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const stylelint = require('stylelint');
 const reporter = require('postcss-reporter');
-
-function styles() {
+const cssVariables = require('postcss-css-variables');
+const sassPlugin = require('gulp-sass')(require('sass'));
+function buildStyles() {
 	return gulp.src('src/*.css')
 		.pipe(sourcemaps.init())
 		.pipe(postcss([
-			autoprefixer
+			autoprefixer,
+			cssVariables({})
 		]))
 		.pipe(sourcemaps.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
+// Deprecrated
 function minify() {
 	return gulp.src('dist/*.css')
 		.pipe(sourcemaps.init({ loadMaps: true }))
@@ -26,12 +29,12 @@ function minify() {
 		.pipe(rename({
 			suffix: '.min'
 		}))
-		.pipe(sourcemaps.write('./maps'))
+		.pipe(sourcemaps.write('/maps'))
 		.pipe(gulp.dest('dist'));
 }
 
 function watch() {
-	const watcher = gulp.watch('src/*.css', build)
+	const watcher = gulp.watch('src/*.sass', build)
 	watcher.on('change', function(fileName) {
 		console.log('Rebuildig ' + fileName)
 	});
@@ -53,9 +56,20 @@ function lint() {
 		.pipe(postcss(postcssOptions))
 }
 
-const build = gulp.series(styles, minify);
+function buildSass() {
+	const sassConfig = sassPlugin({
+		outputStyle: 'compressed'
+	})
+	const sassHandler = sassConfig.on('error', sassPlugin.logError);
+	return gulp.src('src/*.scss')
+		.pipe(sassHandler)
+		.pipe(gulp.dest('src/'))
+}
 
-gulp.task('styles', styles);
+const build = gulp.series(buildSass, buildStyles, minify /*...*/);
+
+gulp.task('build-sass', buildSass);
+gulp.task('build-styles', buildStyles);
 gulp.task('minify', minify);
 gulp.task('default', build);
 gulp.task('lint', lint);
