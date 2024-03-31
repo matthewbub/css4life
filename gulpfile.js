@@ -16,6 +16,7 @@ const cssVariablesPlugin = require('postcss-css-variables');
 const cssMixinsPlugin = require('postcss-mixins');
 const calcPlugin = require('postcss-calc');
 const nestingPlugin = require('postcss-nesting');
+const customMediaPlugin = require('postcss-custom-media');
 
 function buildStyles() {
 	// convert CSS variables to static values for older browsers
@@ -33,6 +34,7 @@ function buildStyles() {
 	const cssMixinsConfig = cssMixinsPlugin({});
 	const calcConfig = calcPlugin({/* handle pixel fall back for rem values */ });
 	const nestingConfig = nestingPlugin({});
+	const customMediaConfig = customMediaPlugin({});
 
 	return gulp.src('src/*.css')
 		.pipe(sourcemapsPlugin.init())
@@ -41,7 +43,8 @@ function buildStyles() {
 			cssVariablesConfig,
 			cssMixinsConfig,
 			calcConfig,
-			nestingConfig
+			nestingConfig,
+			customMediaConfig
 		]))
 		.pipe(sourcemapsPlugin.write('./maps'))
 		.pipe(gulp.dest('dist'));
