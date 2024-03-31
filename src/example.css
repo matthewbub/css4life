@@ -8,5 +8,5 @@
 
 body {
 	background: var(--primary-color);	
-	@mixin fontstyle 32;
+	@mixin fontstyle;
 }
