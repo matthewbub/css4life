@@ -13,8 +13,11 @@ const cssnanoPlugin = require('cssnano');
 const stylelintPlugin = require('stylelint');
 const reporterPlugin = require('postcss-reporter');
 const cssVariablesPlugin = require('postcss-css-variables');
+const cssMixinsPlugin = require('postcss-mixins');
+const calcPlugin = require('postcss-calc');
 
 function buildStyles() {
+	// convert CSS variables to static values for older browsers
 	const cssVariablesConfig = cssVariablesPlugin({
 		// TODO: accept JSON string as optional CLI arg
 		variables: {
@@ -26,12 +29,16 @@ function buildStyles() {
 			'--neutrals-light': '#FFFFFF'
 		}
 	});
+	const cssMixinsConfig = cssMixinsPlugin({});
+	const calcConfig = calcPlugin({/* handle pixel fall back for rem values */ });
 
 	return gulp.src('src/*.css')
 		.pipe(sourcemapsPlugin.init())
 		.pipe(postcssPlugin([
 			autoprefixerPlugin,
-			cssVariablesConfig
+			cssVariablesConfig,
+			cssMixinsConfig,
+			calcConfig
 		]))
 		.pipe(sourcemapsPlugin.write('./maps'))
 		.pipe(gulp.dest('dist'));
@@ -73,7 +80,7 @@ function lint() {
 		.pipe(postcss(postcssOptions))
 }
 
-/** @depreceated */
+/** @deprecated */
 function buildSass() {
 	const sassConfig = sassPlugin({
 		outputStyle: 'compressed'

@@ -1,1 +1,12 @@
-body{display:flex;background:green;width:fit-content;height:300px;color:#000;height:100%}
+:root {
+	--black: #000;
+}
+
+@define-mixin fontstyle {
+	color: var(--black);
+}
+
+body {
+	background: var(--primary-color);	
+	@mixin fontstyle 32;
+}
