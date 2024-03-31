@@ -8,18 +8,32 @@ const stylelint = require('stylelint');
 const reporter = require('postcss-reporter');
 const cssVariables = require('postcss-css-variables');
 const sassPlugin = require('gulp-sass')(require('sass'));
+
 function buildStyles() {
+
+	// CSS Vars are stage 1
+	// https://drafts.csswg.org/css-variables/
+	const cssVariablesConfig = cssVariables({
+		variables: {
+			'--primary-color': '#FFD600',
+			'--neutrals-dark': '#000000',
+			'--neutrals-greydark': '#B9B9B9',
+			'--neutrals-grey': '#D9D9D9',
+			'--neutrals-greylight': '#F1F1F1',
+			'--neutrals-light': '#FFFFFF'
+		}
+	});
+
 	return gulp.src('src/*.css')
 		.pipe(sourcemaps.init())
 		.pipe(postcss([
 			autoprefixer,
-			cssVariables({})
+			cssVariablesConfig
 		]))
 		.pipe(sourcemaps.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
-// Deprecrated
 function minify() {
 	return gulp.src('dist/*.css')
 		.pipe(sourcemaps.init({ loadMaps: true }))
@@ -34,7 +48,7 @@ function minify() {
 }
 
 function watch() {
-	const watcher = gulp.watch('src/*.sass', build)
+	const watcher = gulp.watch('src/*.css', build)
 	watcher.on('change', function(fileName) {
 		console.log('Rebuildig ' + fileName)
 	});
@@ -66,9 +80,9 @@ function buildSass() {
 		.pipe(gulp.dest('src/'))
 }
 
-const build = gulp.series(buildSass, buildStyles, minify /*...*/);
+const build = gulp.series(/*buildSass,*/ buildStyles, minify /*...*/);
 
-gulp.task('build-sass', buildSass);
+//gulp.task('build-sass', buildSass);
 gulp.task('build-styles', buildStyles);
 gulp.task('minify', minify);
 gulp.task('default', build);

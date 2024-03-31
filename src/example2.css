@@ -1,0 +1,8 @@
+:root {
+	--black: #000;
+}
+
+body {
+	background: var(--primary-color);
+	color: var(--black);
+}
