@@ -1,19 +1,22 @@
 const gulp = require('gulp');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
+const sass = require('sass');
+
+// gulp plugins
+const postcssPlugin = require('gulp-postcss');
+const renamePlugin = require('gulp-rename');
+const sourcemapsPlugin = require('gulp-sourcemaps');
+const sassPlugin = require('gulp-sass')(sass);
+
+// postcss plugins
+const autoprefixerPlugin = require('autoprefixer');
 const cssnanoPlugin = require('cssnano');
-const rename = require('gulp-rename');
-const sourcemaps = require('gulp-sourcemaps');
-const stylelint = require('stylelint');
-const reporter = require('postcss-reporter');
-const cssVariables = require('postcss-css-variables');
-const sassPlugin = require('gulp-sass')(require('sass'));
+const stylelintPlugin = require('stylelint');
+const reporterPlugin = require('postcss-reporter');
+const cssVariablesPlugin = require('postcss-css-variables');
 
 function buildStyles() {
-
-	// CSS Vars are stage 1
-	// https://drafts.csswg.org/css-variables/
-	const cssVariablesConfig = cssVariables({
+	const cssVariablesConfig = cssVariablesPlugin({
+		// TODO: accept JSON string as optional CLI arg
 		variables: {
 			'--primary-color': '#FFD600',
 			'--neutrals-dark': '#000000',
@@ -25,25 +28,25 @@ function buildStyles() {
 	});
 
 	return gulp.src('src/*.css')
-		.pipe(sourcemaps.init())
-		.pipe(postcss([
-			autoprefixer,
+		.pipe(sourcemapsPlugin.init())
+		.pipe(postcssPlugin([
+			autoprefixerPlugin,
 			cssVariablesConfig
 		]))
-		.pipe(sourcemaps.write('./maps'))
+		.pipe(sourcemapsPlugin.write('./maps'))
 		.pipe(gulp.dest('dist'));
 }
 
 function minify() {
 	return gulp.src('dist/*.css')
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(postcss([
+		.pipe(sourcemapsPlugin.init({ loadMaps: true }))
+		.pipe(postcssPlugin([
 			cssnanoPlugin
 		]))
-		.pipe(rename({
+		.pipe(renamePlugin({
 			suffix: '.min'
 		}))
-		.pipe(sourcemaps.write('/maps'))
+		.pipe(sourcemapsPlugin.write('/maps'))
 		.pipe(gulp.dest('dist'));
 }
 
@@ -59,17 +62,18 @@ function lint() {
 		"color-no-invalid-hex": 2,
 	}
 
-	const stylelintConfig = stylelint({ rules: stylelintRules })
+	const stylelintConfig = stylelintPlugin({ rules: stylelintRules })
 
 	const postcssOptions = [
 		stylelintConfig,
-		reporter({ clearMessages: true })
+		reporterPlugin({ clearMessages: true })
 	]
 
 	return gulp.src('src/*.css')
 		.pipe(postcss(postcssOptions))
 }
 
+/** @depreceated */
 function buildSass() {
 	const sassConfig = sassPlugin({
 		outputStyle: 'compressed'
