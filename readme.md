@@ -1,4 +1,4 @@
-# I make themes with this
+# CSS 4 life
 
 An approachable build system for creating distributable themes using postcss as a css processor. 
 
@@ -7,7 +7,7 @@ An approachable build system for creating distributable themes using postcss as 
 Just clone it, then install the dev dependencies
 
 ```sh
-git clone https://github.com/matthewbub/i-make-themes-with-this
+git clone https://github.com/matthewbub/css4life
 cd i-make-themes-with-this
 npm install
 ```
