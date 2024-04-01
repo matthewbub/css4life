@@ -8,7 +8,7 @@ Just clone it, then install the dev dependencies
 
 ```sh
 git clone https://github.com/matthewbub/css4life
-cd i-make-themes-with-this
+cd css4life
 npm install
 ```
 
