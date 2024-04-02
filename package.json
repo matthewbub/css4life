@@ -1,7 +1,11 @@
 {
-  "name": "i-make-themes-with-this",
-  "version": "1.0.0",
-  "private": true,
+  "name": "css4life",
+  "version": "0.0.1",
+  "private": false,
+	"main": "gulpfile.js",
+	"bin": {
+		"css4life": "./gulpfile.js"
+	},
   "scripts": {
     "build": "npm run build:clean && gulp default && npm run build:format",
     "dev": "gulp watch",
@@ -9,7 +13,6 @@
     "build:format": "prettier --write --ignore-path ./.gitignore-prettier 'dist/*.css'",
     "dev:styles": "gulp build-styles",
     "dev:minify": "gulp minify",
-    "dev:sass": "gulp build-sass",
     "dev:lint": "gulp lint-dev",
     "dev:format": "prettier --write --ignore-path ./.gitignore-prettier 'src/**/*.css'"
   },
@@ -17,11 +20,11 @@
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^10.4.19",
+    "commander": "^12.0.0",
     "cssnano": "^6.1.2",
     "gulp": "^5.0.0",
     "gulp-postcss": "^10.0.0",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "postcss": "^8.4.38",
     "postcss-calc": "^9.0.1",

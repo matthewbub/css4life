@@ -1,6 +1,6 @@
 :root {
   --black: #000;
-  --blue: #007bff;
+  --blue: blue;
 }
 
 @define-mixin fontstyle {
