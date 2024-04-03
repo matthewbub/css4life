@@ -1,41 +1,41 @@
 {
-  "name": "css4life",
-  "version": "0.0.1",
-  "private": false,
+	"name": "css4life",
+	"version": "0.0.1",
+	"private": false,
 	"main": "gulpfile.js",
 	"bin": {
 		"css4life": "./gulpfile.js"
 	},
-  "scripts": {
-    "build": "npm run build:clean && gulp default && npm run build:format",
-    "dev": "gulp watch",
-    "build:clean": "rimraf dist",
-    "build:format": "prettier --write --ignore-path ./.gitignore-prettier 'dist/*.css'",
-    "dev:styles": "gulp build-styles",
-    "dev:minify": "gulp minify",
-    "dev:lint": "gulp lint-dev",
-    "dev:format": "prettier --write --ignore-path ./.gitignore-prettier 'src/**/*.css'"
-  },
-  "author": "Matthew Bub<hey@matthewbub.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "commander": "^12.0.0",
-    "cssnano": "^6.1.2",
-    "gulp": "^5.0.0",
-    "gulp-postcss": "^10.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "postcss": "^8.4.38",
-    "postcss-calc": "^9.0.1",
-    "postcss-css-variables": "^0.19.0",
-    "postcss-custom-media": "^10.0.4",
-    "postcss-mixins": "^10.0.0",
-    "postcss-nesting": "^12.1.1",
-    "postcss-reporter": "^7.1.0",
-    "prettier": "^3.2.5",
-    "rimraf": "^5.0.5",
-    "sass": "^1.72.0",
-    "stylelint": "^16.3.1"
-  }
+	"scripts": {
+		"build": "npm run build:clean && gulp default && npm run build:format",
+		"dev": "gulp watch",
+		"build:clean": "rimraf dist",
+		"build:format": "prettier --write --ignore-path ./.gitignore-prettier 'dist/*.css'",
+		"dev:styles": "gulp build-styles",
+		"dev:minify": "gulp minify",
+		"dev:lint": "gulp lint-dev",
+		"dev:format": "prettier --write --ignore-path ./.gitignore-prettier 'src/**/*.css'"
+	},
+	"author": "Matthew Bub<hey@matthewbub.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"autoprefixer": "^10.4.19",
+		"commander": "^12.0.0",
+		"cssnano": "^6.1.2",
+		"gulp": "^5.0.0",
+		"gulp-postcss": "^10.0.0",
+		"gulp-rename": "^2.0.0",
+		"gulp-sourcemaps": "^3.0.0",
+		"postcss": "^8.4.38",
+		"postcss-calc": "^9.0.1",
+		"postcss-css-variables": "^0.19.0",
+		"postcss-custom-media": "^10.0.4",
+		"postcss-mixins": "^10.0.0",
+		"postcss-nesting": "^12.1.1",
+		"postcss-reporter": "^7.1.0",
+		"prettier": "^3.2.5",
+		"rimraf": "^5.0.5",
+		"sass": "^1.72.0",
+		"stylelint": "^16.3.1"
+	}
 }
