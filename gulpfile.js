@@ -109,10 +109,10 @@ Store.prototype.setCssVariables = function (cssVariables = "") {
 			throw new JsonParsingError(`Error parsing JSON string: ${e.message}`);
 		}
 	}
-	
+
 	this.outsideCssVariables = parseJsonString(cssVariables);
 
-	return this.outsideCssVariables;	
+	return this.outsideCssVariables;
 }
 
 // Create a new instance of the Store class
@@ -274,11 +274,11 @@ program
 	.action(() => {
 		// Programmatically run the minify task
 		minifyCSS((err) => {
-			if (err) {					
-					throw new Error('Minify task failed:', err);
+			if (err) {
+				throw new Error('Minify task failed:', err);
 			}
 
-			console.log('Minify task completed successfully.');	
+			console.log('Minify task completed successfully.');
 		});
 	});
 
