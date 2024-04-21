@@ -18,6 +18,7 @@ const cssMixinsPlugin = require("postcss-mixins");
 const calcPlugin = require("postcss-calc");
 const nestingPlugin = require("postcss-nesting");
 const customMediaPlugin = require("postcss-custom-media");
+const postcssImportPlugin = require("postcss-import");
 
 /**
  * Represents an error that occurs during JSON parsing.
@@ -138,6 +139,7 @@ function buildStyles() {
 		.pipe(sourcemapsPlugin.init())
 		.pipe(
 			postcssPlugin([
+				postcssImportPlugin,
 				autoprefixerPlugin,
 				cssVariablesConfig,
 				cssMixinsConfig,
