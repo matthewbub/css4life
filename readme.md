@@ -57,8 +57,8 @@ Inside the `css4life-test/package.json` add the minimum bits
 
 ```json
 {
-  "name": "css4life-test",
-  "version": "0.0.0",  
+	"name": "css4life-test",
+	"version": "0.0.0",  
 	"devDependencies": {
 		"css4life": "file://../css4life"
 	}
