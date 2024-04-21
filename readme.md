@@ -12,6 +12,7 @@ An approachable build abstraction for creating distributable themes using postcs
 - math support thanks to `postcss-calc`
 - style linting thanks to `style-lint`
 - source map support thanks to `gulp-sourcemaps`
+- relative file imports via `postcss-import`
 
 Coming <strike>soon</strike> also
 - [Responsive text support](https://github.com/madeleineostoja/postcss-responsive-type)
