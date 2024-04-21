@@ -83,8 +83,8 @@ Finally go to the `css4life-test/package.json` and add a build script
 
 ```json
 {
-  "name": "css4life-test",
-  "version": "0.0.0",  
+	"name": "css4life-test",
+	"version": "0.0.0",  
 	"scripts": {
 		"build": "css4life build --src='test.css' --build='dist'"
 	},
