@@ -95,5 +95,3 @@ Finally go to the `css4life-test/package.json` and add a build script
 ```
 
 Now we're able to write and compile CSS in the `css4life-test` package, and implement dev changes to the `css4life` build package without having to do anything other than save our changes and run the npm command again. 
-
-[![Travis Scott - MODERN JAM](https://img.youtube.com/vi/g8IvO7OwdaM/0.jpg)](https://www.youtube.com/watch?v=g8IvO7OwdaM)
