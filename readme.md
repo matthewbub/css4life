@@ -81,13 +81,13 @@ Then, in the `css4life-test` directory, execute `npm link css4life`
 
 Finally go to the `css4life-test/package.json` and add a build script
 
-```diff
+```json
 {
   "name": "css4life-test",
   "version": "0.0.0",  
-+ "scripts": {
-+		"build": "css4life build --src='test.css' --build='dist'"
-+ },
+	"scripts": {
+		"build": "css4life build --src='test.css' --build='dist'"
+	},
 	"devDependencies": {
 		"css4life": "file://../css4life"
 	}
