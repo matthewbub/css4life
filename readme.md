@@ -2,97 +2,94 @@
 
 An approachable build abstraction for creating distributable themes using postcss as a css processor. Just pass your postcss files, and it spits out vanilla CSS.
 
-## Benefits over CSS
+**Benefits over CSS**
 
-- future css syntax support
-- custom media queries thanks to `postcss-custom-media`
-- automated vendor prefixes thanks to `autoprefixer`
+- Future CSS syntax support
+- Custom media queries enabled by `postcss-custom-media`
+- Cross-browser compatibility thanks to `autoprefixer`
 - `@mixin` syntax support thanks to `postcss-mixins`
 - CSS minification thanks to `cssnano`
-- math support thanks to `postcss-calc`
-- style linting thanks to `style-lint`
-- source map support thanks to `gulp-sourcemaps`
-- relative file imports via `postcss-import`
+- Math support thanks to `postcss-calc`
+- Style linting thanks to `style-lint`
+- Source map support thanks to `gulp-sourcemaps`
 
-Coming <strike>soon</strike> also
-- [Responsive text support](https://github.com/madeleineostoja/postcss-responsive-type)
-- [Responsive images](https://github.com/reworkcss/rework-plugin-at2x)
-
-## CLI
-
-It looks something like this, i'ma document this more when its complete 
-
-- `css4life build --srcDir="" --outputDir="" --cssVariables=""`
-
-## Local Setup 
-
-It's gotta be a multi-step process to test the executable aspect of this. The local setup consists of 3 steps. They are outlined as follows:
-
-1. [Clone and install css4life dependencies](#clone-and-install-css4life-dependencies) 
-2. [Create a test project](#create-a-test-project)
-3. [Link the two local projects together]()
-
-### Clone and install css4life dependencies
-First you'd want to clone this repo
+## Table of contents
+- [Setup](#setup)
+- [Commands](#commands)
+	- [Build](#build)
+		- [Build / Flags](#build--flags)
+	- [Minify](#minify)
+		- [Minify / Flags](#minify--flags)
+	- [Lint](#lint)
+		- [Lint / Flags](#watch--flags)
+	- [Watch](#watch)
+		- [Watch / Flags](#watch--flags)
+## Setup 
+Just clone this repo into your build tools or desired location, and then hit the `./gulpfile.js` in the root directory 
 
 ```sh
-git clone https://github.com/matthewbub/css4life
-cd css4life
-npm install
+# example build command
+node ./build-tools/css4life/gulpfile.js build --src='public/example/*.css' --build='dist'
 ```
 
-### Create a test project
-Then adjacent of the `css4life` repository, you might create a `css4life-test` directory or something.
+## Commands
 
-After digestion, execute the following set of commands to setup a test new project
+### Build
 
-```sh
-# outside of css4life
+To build your CSS files, invoke the CLI tool by targeting the root `gulpfile.js` with Node.js, followed by the `build` command, then your additional arguments. 
 
-mkdir css4life-test
-cd css4life-test
-touch package.json
+At a minimum, you should pass the `--src` and `--build` flags. For further extendability you could also pass a JSON string of CSS variables to be used in the build process.
+
+```shell
+node ./path/to/this/gulpfile.js build --src=<source-directory> --build=<build-directory> --variables=<json-string-of-css-variables>
 ```
 
-Inside the `css4life-test/package.json` add the minimum bits 
+#### Build / Flags
 
-```json
-{
-	"name": "css4life-test",
-	"version": "0.0.0",  
-	"devDependencies": {
-		"css4life": "file://../css4life"
-	}
-}
+- `--src`: Specifies the source directory containing your CSS files.
+- `--build`: Specifies the output directory for the built CSS files.
+- `--variables`: (Optional) Provides a JSON string of CSS variables to be used in the build process.
+
+### Minify
+
+To minify your CSS files, invoke the CLI tool by targeting the root `gulpfile.js` with Node.js, followed by the `minify` command, then your additional arguments.
+
+At a minimum, you should pass the `--src` and `--build` flags.
+
+```shell
+node ./path/to/this/gulpfile.js minify --src=<source-directory> --build=<build-directory>
 ```
 
-### Link the two local projects together
+#### Minify / Flags
 
-Now we need to link the projects together. 
+- `--src`: Specifies the source directory containing your CSS files.
+- `--build`: Specifies the output directory for the minified CSS files.
 
-**Linking css4life**
+### Lint
 
-In the `css4life` directory; execute `npm link` 
+To lint your compiled CSS files, invoke the CLI tool by targeting the root `gulpfile.js` with Node.js, followed by the `lint` command, then your additional arguments.
 
-**Linking css4life-test**
+At a minimum, you should pass the `--src` and `--build` flags.
 
-Then, in the `css4life-test` directory, execute `npm link css4life`
-
----
-
-Finally go to the `css4life-test/package.json` and add a build script
-
-```json
-{
-	"name": "css4life-test",
-	"version": "0.0.0",  
-	"scripts": {
-		"build": "css4life build --src='test.css' --build='dist'"
-	},
-	"devDependencies": {
-		"css4life": "file://../css4life"
-	}
-}
+```shell
+node ./path/to/this/gulpfile.js lint --src=<source-directory> 
 ```
 
-Now we're able to write and compile CSS in the `css4life-test` package, and implement dev changes to the `css4life` build package without having to do anything other than save our changes and run the npm command again. 
+#### Lint / Flags
+
+- `--src`: Specifies the source directory containing your CSS files.
+
+### Watch
+
+To watch your PostCSS files, invoke the CLI tool by targeting the root `gulpfile.js` with Node.js, followed by the `watch` command, then your additional arguments. 
+
+At a minimum, you should pass the `--src` and `--build` flags. For further extendability you could also pass a JSON string of CSS variables to be used in the build process.
+
+```shell
+node ./path/to/this/gulpfile.js build --src=<source-directory> --build=<build-directory> --variables=<json-string-of-css-variables>
+```
+
+#### Watch / Flags
+- `--src`: Specifies the source directory containing your CSS files.
+- `--build`: Specifies the output directory for the built CSS files.
+- `--variables`: (Optional) Provides a JSON string of CSS variables to be used in the build process.

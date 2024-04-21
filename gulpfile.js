@@ -169,7 +169,7 @@ function minifyCSS() {
 		.pipe(sourcemapsPlugin.init({ loadMaps: true }))
 		.pipe(postcssPlugin([cssnanoPlugin]))
 		.pipe(renamePlugin({ suffix: ".min" }))
-		.pipe(sourcemapsPlugin.write("/maps"))
+		.pipe(sourcemapsPlugin.write("./maps"))
 		.pipe(gulp.dest(store.buildDir));
 }
 
@@ -182,7 +182,7 @@ function minifyCSS() {
  * @returns {NodeJS.WritableStream} - a stream of CSS files
  */
 function watch() {
-	const watcher = gulp.watch(store.srcDir, build);
+	const watcher = gulp.watch(store.srcDir, store.buildDir);
 	watcher.on("change", (fileName) => {
 		console.log(`Rebuilding ${fileName}`);
 	});
@@ -257,8 +257,67 @@ function buildAction(args) {
 	});
 }
 
+function lintAction(args) {
+	// TODO validate incoming args 
+	const { src } = args;
+
+	// Set the source directory for the CSS files
+	store.setSrcDir(src);
+
+	// Programmatically run the lint task
+	lintDevCode((err) => {
+		if (err) {
+			throw new Error("Lint task failed:", err);
+		}
+
+		console.log("Lint task completed successfully.");
+	});
+}
+
+function minifyAction(args) {
+	// TODO validate incoming args 
+	const { src, build: buildDir } = args;
+
+	// Set the source directory for the CSS files
+	store.setSrcDir(src);
+
+	// Set the build directory for the CSS files
+	store.setBuildDir(buildDir);
+
+	// Programmatically run the minify task
+	minifyCSS((err) => {
+		if (err) {
+			throw new Error("Minify task failed:", err);
+		}
+
+		console.log("Minify task completed successfully.");
+	});
+}
+
+function watchAction(args) {
+	// TODO validate incoming args 
+	const { src, build: buildDir, watch} = args;
+
+	// Set the source directory for the CSS files
+	store.setSrcDir(src);
+
+	// Set the build directory for the CSS files
+	store.setBuildDir(buildDir);
+
+	store.setCssVariables(watch);
+	
+	// Programmatically run the watch task
+	watch((err) => {
+		if (err) {
+			throw new Error("Watch task failed:", err);
+		}
+
+		console.log("Watch task completed successfully.");
+	});
+}
+
 program
-	.version('0.0.1')
+	.version(require('./package.json').version)
 	.description('CLI tool for managing PostCSS plugins');
 
 program
@@ -270,18 +329,24 @@ program
 	.action(buildAction);
 
 program
+	.command('lint')
+	.option('-s, --src <src>', 'source directory for CSS files')
+	.description('lint CSS files')
+	.action(lintAction);
+
+program
 	.command('minify')
 	.option('-s, --src <src>', 'source directory for CSS files')
+	.option('-b, --build <build>', 'build directory for CSS files')	
 	.description('minify CSS files')
-	.action(() => {
-		// Programmatically run the minify task
-		minifyCSS((err) => {
-			if (err) {
-				throw new Error('Minify task failed:', err);
-			}
+	.action(minifyAction);
 
-			console.log('Minify task completed successfully.');
-		});
-	});
+program
+	.command('watch')
+	.option('-s, --src <src>', 'source directory for CSS files')
+	.option('-b, --build <build>', 'build directory for CSS files')	
+	.option('-v, --variables <variables>', 'CSS variables from an outside source')
+	.description('watch CSS files')
+	.action(watchAction);
 
 program.parse(process.argv);
