@@ -49,6 +49,7 @@ node ./path/to/this/gulpfile.js build --src=<source-directory> --build=<build-di
 - `--src`: Specifies the source directory containing your CSS files.
 - `--build`: Specifies the output directory for the built CSS files.
 - `--variables`: (Optional) Provides a JSON string of CSS variables to be used in the build process.
+- `--concat`: (Optional) Concatenates all CSS files within the `--src` directory. Defaults to `false`
 
 ### Minify
 

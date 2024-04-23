@@ -7,6 +7,7 @@ const path = require("path");
 const postcssPlugin = require("gulp-postcss");
 const renamePlugin = require("gulp-rename");
 const sourcemapsPlugin = require("gulp-sourcemaps");
+const concatPlugin = require('gulp-concat');
 
 // postcss plugins
 const autoprefixerPlugin = require("autoprefixer");
@@ -55,6 +56,7 @@ JsonParsingError.prototype.constructor = JsonParsingError;
 function Store() {
 	this.srcDir = "src/*.css";
 	this.buildDir = "dist/";
+	this.concatFiles = false;
 	this.outsideCssVariables = {
 		variables: {
 			"--primary-color": "#FFD600",
@@ -153,6 +155,39 @@ function buildStyles() {
 }
 
 /**
+ * @name buildAndConcatStyles - npm run build-concat
+ * @returns {NodeJS.ReadWriteStream} - a stream of CSS files
+ */
+function buildAndConcatStyles() {
+	// convert CSS variables to static values for older browsers
+	const cssVariablesConfig = cssVariablesPlugin(store.outsideCssVariables);
+	const cssMixinsConfig = cssMixinsPlugin({});
+	const calcConfig = calcPlugin({
+		/* handle pixel fall back for rem values */
+	});
+	const nestingConfig = nestingPlugin({});
+	const customMediaConfig = customMediaPlugin({});
+
+	return gulp
+		.src(store.srcDir)
+		.pipe(sourcemapsPlugin.init())
+		.pipe(
+			postcssPlugin([
+				postcssImportPlugin,
+				autoprefixerPlugin,
+				cssVariablesConfig,
+				cssMixinsConfig,
+				calcConfig,
+				nestingConfig,
+				customMediaConfig,
+			]),
+		)
+		.pipe(concatPlugin('styles.css'))
+		.pipe(sourcemapsPlugin.write("./maps"))
+		.pipe(gulp.dest(store.buildDir));
+}
+
+/**
  * @name minifyCSS - npm run minify
  *
  * @readme
@@ -236,7 +271,7 @@ gulp.task("watch", watch);
 
 function buildAction(args) {
 	// TODO validate incoming args 
-	const { src, build: buildDir, variables } = args;
+	const { src, build: buildDir, variables, concat } = args;
 
 	// Set the source directory for the CSS files
 	store.setSrcDir(src);
@@ -247,14 +282,28 @@ function buildAction(args) {
 	// Set the CSS variables from an outside source
 	store.setCssVariables(variables);
 
-	// Programmatically run the build task
-	build((err) => {
-		if (err) {
-			throw new Error("Build task failed:", err);
-		}
+	// Set the flag to concatenate CSS files
+	store.concatFiles = concat;
 
-		console.log("Build task completed successfully.");
-	});
+	if (store.concatFiles) {
+		// Programmatically run the build and concat task
+		buildAndConcatStyles((err) => {
+			if (err) {
+				throw new Error("Build and concat task failed:", err);
+			}
+
+			console.log("Build and concat task completed successfully.");
+		});
+	} else {
+		// Programmatically run the build task
+		build((err) => {
+			if (err) {
+				throw new Error("Build task failed:", err);
+			}
+
+			console.log("Build task completed successfully.");
+		});
+	}
 }
 
 function lintAction(args) {
@@ -325,6 +374,7 @@ program
 	.option('-s, --src <src>', 'source directory for CSS files')
 	.option('-b, --build <build>', 'build directory for CSS files')
 	.option('-v, --variables <variables>', 'CSS variables from an outside source')
+	.option('-c, --concat', 'concatenate CSS files')
 	.description('build CSS files')
 	.action(buildAction);
 
