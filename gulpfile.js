@@ -79,7 +79,7 @@ Store.prototype.setSrcDir = function (dir) {
 		throw new Error("srcDir must be a string");
 	}
 
-	this.srcDir = dir;
+	this.srcDir = dir.split(",");
 }
 
 /**
