@@ -1,5 +1,7 @@
 # Css 4 Life
 
+**Deprecated: This repository moved to https://github.com/chroniconl/stylist** 
+
 An approachable build abstraction for creating distributable themes using postcss as a css processor. Just pass your postcss files, and it spits out vanilla CSS.
 
 **Benefits over CSS**

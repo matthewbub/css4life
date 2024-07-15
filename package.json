@@ -16,7 +16,7 @@
 		"dev:lint": "gulp lint-dev",
 		"dev:format": "prettier --write --ignore-path ./.gitignore-prettier 'src/**/*.css'"
 	},
-	"author": "Matthew Bub<hey@matthewbub.com>",
+	"author": "Matthew Bub<6matbub@gmail.com>",
 	"license": "MIT",
 	"devDependencies": {
 		"autoprefixer": "^10.4.19",
